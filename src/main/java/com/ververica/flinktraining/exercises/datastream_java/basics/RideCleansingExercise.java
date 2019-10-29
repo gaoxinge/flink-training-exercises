@@ -19,7 +19,7 @@ package com.ververica.flinktraining.exercises.datastream_java.basics;
 import com.ververica.flinktraining.exercises.datastream_java.sources.TaxiRideSource;
 import com.ververica.flinktraining.exercises.datastream_java.datatypes.TaxiRide;
 import com.ververica.flinktraining.exercises.datastream_java.utils.ExerciseBase;
-import com.ververica.flinktraining.exercises.datastream_java.utils.MissingSolutionException;
+import com.ververica.flinktraining.exercises.datastream_java.utils.GeoUtils;
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -66,7 +66,9 @@ public class RideCleansingExercise extends ExerciseBase {
 
 		@Override
 		public boolean filter(TaxiRide taxiRide) throws Exception {
-			throw new MissingSolutionException();
+			boolean isStartInNYC = GeoUtils.isInNYC(taxiRide.startLon, taxiRide.startLat);
+			boolean isEndInNYC = GeoUtils.isInNYC(taxiRide.endLon, taxiRide.endLat);
+			return isStartInNYC && isEndInNYC;
 		}
 	}
 
